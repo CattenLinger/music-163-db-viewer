@@ -1,6 +1,6 @@
 package com.shinonometn.hacks.music.viewer.ui;
 
-import com.shinonometn.hacks.music.viewer.util.AppCrashHandler;
+import com.shinonometn.hacks.music.viewer.ui.controller.HomeView;
 import com.shinonometn.hacks.music.viewer.util.FxKit;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,14 +28,14 @@ public class App {
             throw new IllegalStateException("App already started");
         }
 
-        FXMLLoader fxmlLoader = FxKit.getLoader("/ui/view/main.fxml");
-
         stage.setTitle(i18n("app.title"));
         stage.setResizable(true);
         stage.setWidth(800);
         stage.setHeight(600);
 
-        instance = new App(stage, new Scene(fxmlLoader.load()));
+        Scene scene = new Scene(new HomeView());
+        instance = new App(stage, scene);
+        stage.setScene(scene);
 
         return stage;
     }

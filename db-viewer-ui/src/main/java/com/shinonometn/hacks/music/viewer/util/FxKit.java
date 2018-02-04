@@ -2,6 +2,7 @@ package com.shinonometn.hacks.music.viewer.util;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.slf4j.Logger;
@@ -24,12 +25,21 @@ public class FxKit {
         return new FXMLLoader(FxKit.class.getResource(fxmlPath), I18n.UI_MAIN_BUNDLE);
     }
 
-    public static FXMLLoader load(String fxmlPath) throws IOException {
+    public static FXMLLoader getLoader(Node node, String fxmlPath){
+        return new FXMLLoader(node.getClass().getResource(fxmlPath), I18n.UI_MAIN_BUNDLE);
+    }
+
+    public static <T> T load(String fxmlPath) throws IOException {
         FXMLLoader loader = getLoader(fxmlPath);
 
-        loader.load();
+        return loader.load();
+    }
 
-        return loader;
+    public static <T> T load(Node node, String fxmlPath) throws IOException {
+        FXMLLoader loader = new FXMLLoader(node.getClass().getResource(fxmlPath), I18n.UI_MAIN_BUNDLE);
+        loader.setRoot(node);
+        loader.setController(node);
+        return loader.load();
     }
 
     public static void error(String message){
