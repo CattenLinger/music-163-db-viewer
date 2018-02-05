@@ -6,14 +6,14 @@ package com.shinonometn.hacks.music.viewer.db.netease.entities.playlist;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.shinonometn.hacks.music.viewer.info.Playlist;
+import com.shinonometn.hacks.music.viewer.info.PlayList;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NEPlaylist implements Playlist{
+public class NEPlayList implements PlayList {
     @JsonProperty("privacy")
     private Integer privacy;
 
@@ -108,7 +108,7 @@ public class NEPlaylist implements Playlist{
     private Integer status;
 
     @Override
-    public Integer getUnifiedId() {
-        return this.id;
+    public String getTitle() {
+        return name;
     }
 }
