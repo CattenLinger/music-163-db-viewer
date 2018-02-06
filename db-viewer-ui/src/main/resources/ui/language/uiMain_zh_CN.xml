@@ -2,4 +2,18 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="app.title">音乐数据库浏览器</entry>
+    <entry key="app.name">音乐数据库浏览器</entry>
+    <entry key="menu.database">数据库</entry>
+    <entry key="menu.database.open">打开</entry>
+    <entry key="menu.database.close">关闭</entry>
+    <entry key="menu.localStorage">媒体库</entry>
+    <entry key="menu.localStorage.settings">设置</entry>
+    <entry key="menu.help">帮助</entry>
+    <entry key="menu.help.about">关于</entry>
+    <entry key="selectUser.title">数据库有多个用户账户，请选择一个</entry>
+    <entry key="selectUser.confirm">确定</entry>
+    <entry key="selectUser.cancel">取消</entry>
+    <entry key="selectUser.window.title">选择一个用户以继续</entry>
+    <entry key="msg.database_no_user">数据库貌似没有任何用户信息。</entry>
+    <entry key="msg.create_session_view_failed">无法打开这个数据库！</entry>
 </properties>

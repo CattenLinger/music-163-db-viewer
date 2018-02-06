@@ -66,7 +66,7 @@ public class HomeView extends BorderPane {
                 new Alert(Alert.AlertType.ERROR, I18n.i18n("msg.database_no_user"), ButtonType.OK).showAndWait();
             } else {
                 PlayerUser selectedUser;
-                if (playerUsers.size() > 1) {
+                if (playerUsers.size() <= 1) {
                     selectedUser = playerUsers.get(0);
                 } else {
                     selectedUser = new SelectUserDialog().show(App.stage(), playerUsers);

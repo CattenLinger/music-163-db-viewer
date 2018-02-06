@@ -31,8 +31,8 @@ public class App {
 
         stage.setTitle(i18n("app.title"));
         stage.setResizable(true);
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1280);
+        stage.setHeight(720);
 
         Scene scene = new Scene(new HomeView());
         instance = new App(stage, scene);
