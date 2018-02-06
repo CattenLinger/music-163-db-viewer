@@ -18,4 +18,9 @@
     <entry key="msg.create_session_view_failed">Error while opening database!</entry>
     <entry key="edit.currentUser">User:</entry>
     <entry key="edit.currentUser.change">Change</entry>
+    <entry key="playlist.title">Title</entry>
+    <entry key="playlist.description">Description</entry>
+    <entry key="playlist.track.title">Title</entry>
+    <entry key="playlist.track.artist">Artist</entry>
+    <entry key="playlist.track.album">Album</entry>
 </properties>
