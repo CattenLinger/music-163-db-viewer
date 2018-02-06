@@ -14,4 +14,6 @@
     <entry key="selectUser.confirm">Confirm</entry>
     <entry key="selectUser.cancel">Cancel</entry>
     <entry key="selectUser.window.title">Select a user to continue</entry>
+    <entry key="msg.database_no_user">It seems that the database has no user.</entry>
+    <entry key="msg.create_session_view_failed">Error while opening database!</entry>
 </properties>

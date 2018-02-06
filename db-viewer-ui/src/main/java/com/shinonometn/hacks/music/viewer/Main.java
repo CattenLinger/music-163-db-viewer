@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Main extends Application {
 
-    private final static Logger logger = LoggerFactory.getLogger(Main.class);
+    public final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         Thread.setDefaultUncaughtExceptionHandler(AppCrashHandler.getInstance());

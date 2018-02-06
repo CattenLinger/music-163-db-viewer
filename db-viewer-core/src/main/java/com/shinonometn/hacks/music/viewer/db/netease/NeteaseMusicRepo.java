@@ -1,7 +1,9 @@
 package com.shinonometn.hacks.music.viewer.db.netease;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.db.netease.entities.playlist.NEPlayList;
+import com.shinonometn.hacks.music.viewer.db.netease.entities.track.NETrackInfo;
 import com.shinonometn.hacks.music.viewer.db.netease.entities.users.NEPlayerUser;
 import com.shinonometn.hacks.music.viewer.info.PlayList;
 import com.shinonometn.hacks.music.viewer.info.PlayerUser;
@@ -52,15 +54,16 @@ public class NeteaseMusicRepo implements MusicRepo {
         if (nePlayerUser.getPlayListIds().size() <= 0) {
             return Collections.emptyList();
         } else {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder("(");
             for (Integer id : nePlayerUser.getPlayListIds()) {
                 stringBuilder.append(id).append(",");
             }
-            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1).append(")");
 
             return jdbcTemplate.query(
                     "SELECT playlist FROM web_playlist WHERE pid in " + stringBuilder.toString(),
-                    (resultSet, i) -> JsonUtils.read(resultSet.getBinaryStream("playlist"))
+                    (resultSet, i) -> JsonUtils.read(resultSet.getBinaryStream("playlist"), new TypeReference<NEPlayList>() {
+                    })
             );
         }
     }
@@ -69,7 +72,8 @@ public class NeteaseMusicRepo implements MusicRepo {
     public List<PlayList> getLists() {
         return jdbcTemplate.query(
                 "SELECT playlist FROM web_playlist",
-                (resultSet, i) -> JsonUtils.read(resultSet.getBinaryStream("playlist"))
+                (resultSet, i) -> JsonUtils.read(resultSet.getBinaryStream("playlist"), new TypeReference<NEPlayList>() {
+                })
         );
     }
 
@@ -85,7 +89,8 @@ public class NeteaseMusicRepo implements MusicRepo {
                         "    LEFT JOIN web_playlist wp ON wp.pid = wpt.pid\n" +
                         "  WHERE wpt.pid = ?\n" +
                         "  ORDER BY 'order'",
-                (resultSet, i) -> JsonUtils.read(resultSet.getBinaryStream("track")),
+                (resultSet, i) -> JsonUtils.read(resultSet.getBinaryStream("track"), new TypeReference<NETrackInfo>() {
+                }),
                 nePlayList.getId());
     }
 

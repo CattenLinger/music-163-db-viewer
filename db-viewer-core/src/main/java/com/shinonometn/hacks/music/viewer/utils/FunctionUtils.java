@@ -1,7 +1,5 @@
 package com.shinonometn.hacks.music.viewer.utils;
 
-import java.util.function.Supplier;
-
 @SuppressWarnings("unchecked")
 public final class FunctionUtils {
 
@@ -14,11 +12,23 @@ public final class FunctionUtils {
         }
     }
 
-    public static <E extends Throwable> void throwable(Throwable throwable) throws E {
+    public static void call(ExceptionConsumer consumer){
+        try {
+            consumer.call();
+        }catch (Throwable e){
+            throwable(e);
+        }
+    }
+
+    private static <E extends Throwable> void throwable(Throwable throwable) throws E {
         throw (E)throwable;
     }
 
     public interface ExceptionSupplier<T>{
         T get() throws Throwable;
+    }
+
+    public interface ExceptionConsumer {
+        void call() throws Throwable;
     }
 }

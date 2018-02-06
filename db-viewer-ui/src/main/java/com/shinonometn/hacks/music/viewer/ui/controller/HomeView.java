@@ -1,24 +1,27 @@
 package com.shinonometn.hacks.music.viewer.ui.controller;
 
+import com.shinonometn.hacks.music.viewer.Main;
 import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.db.netease.NeteaseMusicRepoFactory;
 import com.shinonometn.hacks.music.viewer.info.PlayerUser;
 import com.shinonometn.hacks.music.viewer.ui.App;
 import com.shinonometn.hacks.music.viewer.ui.controller.dialog.SelectUserDialog;
-import com.shinonometn.hacks.music.viewer.ui.domain.EditSession;
 import com.shinonometn.hacks.music.viewer.util.FxKit;
+import com.shinonometn.hacks.music.viewer.util.I18n;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.List;
 
 public class HomeView extends BorderPane {
 
-    private EditSession currentSession;
+    private EditSessionView sessionView;
 
     @FXML
     private MenuItem menuItemOpenDatabase;
@@ -34,40 +37,70 @@ public class HomeView extends BorderPane {
 
     @FXML
     private void initialize() {
-        menuItemOpenDatabase.setOnAction(e -> {
-            DirectoryChooser directoryChooser = new DirectoryChooser();
-            File selectedLocation = directoryChooser.showDialog(App.stage());
-            if (selectedLocation != null) {
-                System.out.println(selectedLocation.getAbsolutePath());
-            }
 
-            PlayerUser playerUser = new SelectUserDialog().show(App.stage(),
-                    IntStream
-                            .range(0, 10)
-                            .mapToObj(i -> new PlayerUser() {
-                                @Override
-                                public String getAccount() {
-                                    return String.valueOf(i);
-                                }
-                            }).collect(Collectors.toList()));
+        // Setup button actions
+        menuItemOpenDatabase.setOnAction(e -> openDB());
 
-            System.out.println(playerUser);
-        });
-
-        OpenSessionView.getInstance().setButtonAction(menuItemOpenDatabase.getOnAction());
+        // Welcome view center button acion
+        OpenSessionView.getInstance().setButtonAction(e -> openDB());
     }
 
-    private void createSession(String dbPath) throws Exception {
-        if (currentSession != null) {
-            throw new IllegalStateException("Session opened");
+    private void openDB() {
+        FileChooser fileChooser = new FileChooser();
+
+        File selectedLocation = fileChooser.showOpenDialog(App.stage());
+
+        if (selectedLocation != null) {
+            createSession(selectedLocation.getAbsolutePath());
         }
-
-        MusicRepo musicRepo = new NeteaseMusicRepoFactory(dbPath).build();
-        this.currentSession = new EditSession(musicRepo);
-
     }
 
-    private void closeSession() {
-        this.currentSession = null;
+    private void createSession(String dbPath) {
+        closeSessionView();
+
+        try {
+            MusicRepo musicRepo = new NeteaseMusicRepoFactory(dbPath).build();
+
+            List<PlayerUser> playerUsers = musicRepo.getUsers();
+            if (playerUsers.size() == 0) {
+                new Alert(Alert.AlertType.ERROR, I18n.i18n("msg.database_no_user"), ButtonType.OK).showAndWait();
+            } else {
+                PlayerUser selectedUser;
+                if (playerUsers.size() > 1) {
+                    selectedUser = playerUsers.get(0);
+                } else {
+                    selectedUser = new SelectUserDialog().show(App.stage(), playerUsers);
+                }
+
+                if (selectedUser != null) {
+                    setSessionView(new EditSessionView(musicRepo, selectedUser));
+                }
+            }
+        } catch (Exception e) {
+            Main.LOGGER.error("",e);
+            new Alert(Alert.AlertType.ERROR, I18n.i18n("msg.create_session_view_failed"), ButtonType.OK).showAndWait();
+        }
+    }
+
+    private void closeSessionView() {
+        Node center = getCenter();
+
+        if(center instanceof EditSessionView){
+            EditSessionView editSessionView = getSessionView();
+            if (editSessionView != null) {
+                editSessionView.close();
+                setSessionView(null);
+            }
+        }else{
+            setCenter(null);
+        }
+    }
+
+    private void setSessionView(EditSessionView editSessionView) {
+        this.setCenter(editSessionView);
+    }
+
+    private EditSessionView getSessionView() {
+        return (EditSessionView) this.getCenter();
     }
 }

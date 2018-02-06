@@ -30,4 +30,13 @@ public class JsonUtils {
             return null;
         }
     }
+
+    public static <T> T read(InputStream stream, TypeReference<T> typeReference){
+        try {
+            return objectMapper.readValue(stream,typeReference);
+        }catch (IOException e){
+            logger.error("",e);
+            return null;
+        }
+    }
 }
