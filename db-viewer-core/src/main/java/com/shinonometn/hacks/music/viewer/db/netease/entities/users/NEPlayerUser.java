@@ -9,4 +9,9 @@ import java.util.List;
 public class NEPlayerUser implements PlayerUser {
     private Integer id;
     private List<Integer> playListIds;
+
+    @Override
+    public String getAccount() {
+        return String.valueOf(id);
+    }
 }

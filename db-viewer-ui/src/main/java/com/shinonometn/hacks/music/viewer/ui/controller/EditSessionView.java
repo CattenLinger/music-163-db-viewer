@@ -1,4 +1,11 @@
 package com.shinonometn.hacks.music.viewer.ui.controller;
 
-public class EditSessionView {
+import com.shinonometn.hacks.music.viewer.util.FxKit;
+import javafx.scene.control.SplitPane;
+
+public class EditSessionView extends SplitPane {
+
+    public EditSessionView() {
+        FxKit.load(this, "/ui/view/editSession.fxml");
+    }
 }

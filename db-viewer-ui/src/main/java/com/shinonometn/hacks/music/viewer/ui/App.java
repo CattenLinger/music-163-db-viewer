@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.IOException;
 
 import static com.shinonometn.hacks.music.viewer.util.I18n.i18n;
@@ -38,6 +39,16 @@ public class App {
         stage.setScene(scene);
 
         return stage;
+    }
+
+    /**
+     *
+     * The stage of the App
+     *
+     * @return Stage
+     */
+    public static Stage stage(){
+        return instance.stage;
     }
 
     private final Stage stage;

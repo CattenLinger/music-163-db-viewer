@@ -1,5 +1,6 @@
 package com.shinonometn.hacks.music.viewer.util;
 
+import com.shinonometn.hacks.music.viewer.utils.FunctionUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -35,11 +36,11 @@ public class FxKit {
         return loader.load();
     }
 
-    public static <T> T load(Node node, String fxmlPath) throws IOException {
+    public static <T> T load(Node node, String fxmlPath){
         FXMLLoader loader = new FXMLLoader(node.getClass().getResource(fxmlPath), I18n.UI_MAIN_BUNDLE);
         loader.setRoot(node);
         loader.setController(node);
-        return loader.load();
+        return FunctionUtils.invoke(loader::load);
     }
 
     public static void error(String message){

@@ -3,4 +3,15 @@
 <properties>
     <entry key="app.title">Music DB Explorer</entry>
     <entry key="app.name">Music DB Explorer</entry>
+    <entry key="menu.database">Database</entry>
+    <entry key="menu.database.open">Open</entry>
+    <entry key="menu.database.close">Close</entry>
+    <entry key="menu.localStorage">Media Storage</entry>
+    <entry key="menu.localStorage.settings">Settings</entry>
+    <entry key="menu.help">Help</entry>
+    <entry key="menu.help.about">About</entry>
+    <entry key="selectUser.title">There are more than one account in the database. Select one to continue.</entry>
+    <entry key="selectUser.confirm">Confirm</entry>
+    <entry key="selectUser.cancel">Cancel</entry>
+    <entry key="selectUser.window.title">Select a user to continue</entry>
 </properties>

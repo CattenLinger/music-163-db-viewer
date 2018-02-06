@@ -8,20 +8,20 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
-                <Menu mnemonicParsing="false" text="Database">
+                <Menu mnemonicParsing="false" text="%menu.database">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Open" id="menuItemOpenDatabase"/>
-                        <MenuItem mnemonicParsing="false" text="Close" id="menuItemCloseDatabase"/>
+                        <MenuItem mnemonicParsing="false" text="%menu.database.open" fx:id="menuItemOpenDatabase"/>
+                        <MenuItem mnemonicParsing="false" text="%menu.database.close" fx:id="menuItemCloseDatabase"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Local Storage">
+                <Menu mnemonicParsing="false" text="%menu.localStorage">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Settings"/>
+                        <MenuItem mnemonicParsing="false" text="%menu.localStorage.settings"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu mnemonicParsing="false" text="%menu.help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
+                        <MenuItem mnemonicParsing="false" text="%menu.help.about"/>
                     </items>
                 </Menu>
             </menus>
