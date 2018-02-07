@@ -27,4 +27,6 @@
     <entry key="openSession.mainTitle">Open Music Database</entry>
     <entry key="edit.sessionInfo">Details</entry>
     <entry key="dialog.sessionInfo.content.template">Driver: %s</entry>
+    <entry key="dialog.sessionInfo.title">Informations</entry>
+    <entry key="dialog.sessionInfo.header">Information about current database</entry>
 </properties>

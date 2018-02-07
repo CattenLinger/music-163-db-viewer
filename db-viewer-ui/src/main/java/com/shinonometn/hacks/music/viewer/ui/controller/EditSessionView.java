@@ -3,7 +3,6 @@ package com.shinonometn.hacks.music.viewer.ui.controller;
 import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.info.PlayList;
 import com.shinonometn.hacks.music.viewer.info.PlayerUser;
-import com.shinonometn.hacks.music.viewer.info.TrackInfo;
 import com.shinonometn.hacks.music.viewer.ui.App;
 import com.shinonometn.hacks.music.viewer.ui.component.TextPropertyListCell;
 import com.shinonometn.hacks.music.viewer.ui.controller.dialog.SelectUserDialog;
@@ -15,19 +14,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 
-import java.util.Collection;
 import java.util.List;
 
 import static com.shinonometn.hacks.music.viewer.util.I18n.i18n;
 
 public class EditSessionView extends SplitPane {
 
+    // Current music repo
     private Property<MusicRepo> musicRepo = new SimpleObjectProperty<>();
 
     // All PlayerUsers in the database
@@ -54,7 +54,6 @@ public class EditSessionView extends SplitPane {
     private BorderPane playlistView;
 
     public EditSessionView(MusicRepo musicRepo) {
-
         FxKit.load(this, "/ui/view/editSession.fxml");
 
         // Set current MusicRepo, the UI will load all things automatically
@@ -84,7 +83,7 @@ public class EditSessionView extends SplitPane {
         playerUser.addListener((observable, oldValue, newValue) -> {
 
             // Set up labels
-            labelCurrentUser.setText(i18n("edit.currentUser.template",newValue.getAccount()));
+            labelCurrentUser.setText(i18n("edit.currentUser.template", newValue.getAccount()));
 
             // Fill the listView with new user's list
             playLists.clear();
@@ -106,11 +105,11 @@ public class EditSessionView extends SplitPane {
 
         // Set up PlayList list.
         listPlayList.setCellFactory(param -> TextPropertyListCell.of(PlayList::getTitle));
-        listPlayList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                showPlayList(newValue);
-            }
-        });
+        listPlayList.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) showPlayList(newValue);
+                });
         listPlayList.setItems(playLists);
     }
 
@@ -126,11 +125,16 @@ public class EditSessionView extends SplitPane {
 
     // Put playlist on right
     private void showPlayList(PlayList playList) {
-        if (playlistView.getCenter() != null) {
-            playlistView.setCenter(null);
+        Node node = playlistView.getCenter();
+        PlayListView playListView;
+        if (node == null || !(node instanceof PlayListView)) {
+            playListView = new PlayListView(p -> musicRepo.getValue().getTracks(p));
+            playlistView.setCenter(playListView);
+        } else {
+            playListView = (PlayListView) playlistView.getCenter();
         }
-        List<TrackInfo> trackInfoList = musicRepo.getValue().getTracks(playList);
-        playlistView.setCenter(new PlayListView(playList, trackInfoList));
+
+        playListView.setPlayList(playList);
     }
 
     public void close() {
