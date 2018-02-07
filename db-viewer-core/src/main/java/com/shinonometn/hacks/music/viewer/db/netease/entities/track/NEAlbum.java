@@ -4,6 +4,7 @@ package com.shinonometn.hacks.music.viewer.db.netease.entities.track;
  * Created by JacksonGenerator on 1/31/18.
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shinonometn.hacks.music.viewer.info.Album;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NEAlbum implements Album {
     @JsonProperty("picUrl")
     private String picUrl;

@@ -4,7 +4,9 @@ import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.info.PlayList;
 import com.shinonometn.hacks.music.viewer.info.PlayerUser;
 import com.shinonometn.hacks.music.viewer.info.TrackInfo;
+import com.shinonometn.hacks.music.viewer.ui.App;
 import com.shinonometn.hacks.music.viewer.ui.component.TextPropertyListCell;
+import com.shinonometn.hacks.music.viewer.ui.controller.dialog.SelectUserDialog;
 import com.shinonometn.hacks.music.viewer.util.FxKit;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,7 +71,19 @@ public class EditSessionView extends SplitPane {
     }
 
     private void changeUser() {
+        if(playlistView.getCenter() != null){
+            playlistView.setCenter(null);
+        }
 
+        PlayerUser selectedUser = new SelectUserDialog().show(App.stage(), playerUsers);
+
+        if(selectedUser != null){
+            playListContainer.clear();
+            playListContainer.addAll(musicRepo.getLists(selectedUser));
+
+            labelCurrentUser.setText(selectedUser.getAccount());
+            playerUser = selectedUser;
+        }
     }
 
     private void showPlayList(PlayList playList) {
