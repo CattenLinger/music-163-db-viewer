@@ -3,9 +3,7 @@ package com.shinonometn.hacks.music.viewer.ui.controller;
 import com.shinonometn.hacks.music.viewer.Main;
 import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.db.netease.NeteaseMusicRepoFactory;
-import com.shinonometn.hacks.music.viewer.info.PlayerUser;
 import com.shinonometn.hacks.music.viewer.ui.App;
-import com.shinonometn.hacks.music.viewer.ui.controller.dialog.SelectUserDialog;
 import com.shinonometn.hacks.music.viewer.util.FxKit;
 import com.shinonometn.hacks.music.viewer.util.I18n;
 import javafx.fxml.FXML;
@@ -17,11 +15,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.List;
 
 public class HomeView extends BorderPane {
-
-    private EditSessionView sessionView;
 
     @FXML
     private MenuItem menuItemOpenDatabase;
@@ -38,10 +33,19 @@ public class HomeView extends BorderPane {
     @FXML
     private void initialize() {
 
-        // Setup button actions
+        // Setup menu actions
         menuItemOpenDatabase.setOnAction(e -> openDB());
+        menuItemCloseDatabase.setOnAction(e -> {
+            if (getCenter() != null) closeCenterView();
+        });
 
-        // Welcome view center button acion
+        // Add listener at the center of self
+        centerProperty().addListener((observable, oldValue, newValue) -> {
+            //If no session view, the Close menu disable.
+            menuItemCloseDatabase.setDisable(newValue != null);
+        });
+
+        // Welcome view center button action
         OpenSessionView.getInstance().setButtonAction(e -> openDB());
     }
 
@@ -56,51 +60,26 @@ public class HomeView extends BorderPane {
     }
 
     private void createSession(String dbPath) {
-        closeSessionView();
+        closeCenterView();
 
         try {
             MusicRepo musicRepo = new NeteaseMusicRepoFactory(dbPath).build();
-
-            List<PlayerUser> playerUsers = musicRepo.getUsers();
-            if (playerUsers.size() == 0) {
-                new Alert(Alert.AlertType.ERROR, I18n.i18n("msg.database_no_user"), ButtonType.OK).showAndWait();
-            } else {
-                PlayerUser selectedUser;
-                if (playerUsers.size() <= 1) {
-                    selectedUser = playerUsers.get(0);
-                } else {
-                    selectedUser = new SelectUserDialog().show(App.stage(), playerUsers);
-                }
-
-                if (selectedUser != null) {
-                    setSessionView(new EditSessionView(musicRepo, selectedUser));
-                }
-            }
+            setCenter(new EditSessionView(musicRepo));
         } catch (Exception e) {
-            Main.LOGGER.error("",e);
+            Main.LOGGER.error("", e);
             new Alert(Alert.AlertType.ERROR, I18n.i18n("msg.create_session_view_failed"), ButtonType.OK).showAndWait();
         }
     }
 
-    private void closeSessionView() {
+    private void closeCenterView() {
         Node center = getCenter();
 
-        if(center instanceof EditSessionView){
-            EditSessionView editSessionView = getSessionView();
-            if (editSessionView != null) {
-                editSessionView.close();
-                setSessionView(null);
+        if (center != null) {
+            if (center instanceof EditSessionView) {
+                ((EditSessionView) center).close();
             }
-        }else{
+
             setCenter(null);
         }
-    }
-
-    private void setSessionView(EditSessionView editSessionView) {
-        this.setCenter(editSessionView);
-    }
-
-    private EditSessionView getSessionView() {
-        return (EditSessionView) this.getCenter();
     }
 }

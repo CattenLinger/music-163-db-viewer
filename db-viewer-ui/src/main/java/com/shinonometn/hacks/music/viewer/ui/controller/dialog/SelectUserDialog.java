@@ -80,10 +80,17 @@ public class SelectUserDialog extends VBox {
 
         //Set up buttons
         btnConfirm.setOnAction(e -> stage.close());
+
         btnCancel.setOnAction(e -> {
             //Cancel selected
             listUser.getSelectionModel().select(-1);
             stage.close();
+        });
+
+        listUser.setOnMouseClicked(click -> {
+            if(click.getClickCount() == 2){
+                stage.close();
+            }
         });
 
         stage.showAndWait();

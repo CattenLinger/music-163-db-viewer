@@ -16,11 +16,15 @@
     <entry key="selectUser.window.title">Select a user to continue</entry>
     <entry key="msg.database_no_user">It seems that the database has no user.</entry>
     <entry key="msg.create_session_view_failed">Error while opening database!</entry>
-    <entry key="edit.currentUser">User:</entry>
+    <entry key="edit.currentUser.template">User: %s</entry>
     <entry key="edit.currentUser.change">Change</entry>
     <entry key="playlist.title">Title</entry>
     <entry key="playlist.description">Description</entry>
     <entry key="playlist.track.title">Title</entry>
     <entry key="playlist.track.artist">Artist</entry>
     <entry key="playlist.track.album">Album</entry>
+    <entry key="openSession.subTitle">To see your playlist and musics</entry>
+    <entry key="openSession.mainTitle">Open Music Database</entry>
+    <entry key="edit.sessionInfo">Details</entry>
+    <entry key="dialog.sessionInfo.content.template">Driver: %s</entry>
 </properties>

@@ -7,8 +7,12 @@ import com.shinonometn.hacks.music.viewer.info.TrackInfo;
 import com.shinonometn.hacks.music.viewer.ui.App;
 import com.shinonometn.hacks.music.viewer.ui.component.TextPropertyListCell;
 import com.shinonometn.hacks.music.viewer.ui.controller.dialog.SelectUserDialog;
+import com.shinonometn.hacks.music.viewer.ui.controller.dialog.SessionInfoDialog;
 import com.shinonometn.hacks.music.viewer.util.FxKit;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,18 +21,25 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 
+import java.util.Collection;
 import java.util.List;
+
+import static com.shinonometn.hacks.music.viewer.util.I18n.i18n;
 
 public class EditSessionView extends SplitPane {
 
-    private MusicRepo musicRepo;
-    private PlayerUser playerUser;
+    private Property<MusicRepo> musicRepo = new SimpleObjectProperty<>();
 
-    private List<PlayerUser> playerUsers;
+    // All PlayerUsers in the database
+    private ObservableList<PlayerUser> playerUserList = FXCollections.observableArrayList();
+
+    // Current PlayerUser
+    private Property<PlayerUser> playerUser = new SimpleObjectProperty<>();
+    // PlayLists for current user
+    private ObservableList<PlayList> playLists = FXCollections.observableArrayList();
 
     @FXML
     private ListView<PlayList> listPlayList;
-    private ObservableList<PlayList> playListContainer = FXCollections.observableArrayList();
 
     @FXML
     private Label labelCurrentUser;
@@ -37,61 +48,89 @@ public class EditSessionView extends SplitPane {
     private Button btnChangeUser;
 
     @FXML
+    private Button btnSessionInfo;
+
+    @FXML
     private BorderPane playlistView;
 
-    public EditSessionView(MusicRepo musicRepo, PlayerUser playerUser) {
-        this.musicRepo = musicRepo;
-        this.playerUser = playerUser;
-
-        this.playerUsers = musicRepo.getUsers();
+    public EditSessionView(MusicRepo musicRepo) {
 
         FxKit.load(this, "/ui/view/editSession.fxml");
+
+        // Set current MusicRepo, the UI will load all things automatically
+        this.musicRepo.setValue(musicRepo);
     }
 
     @FXML
     private void initialize() {
-        labelCurrentUser.setText(playerUser.getAccount());
 
-        if (playerUsers.size() <= 0) {
-            btnChangeUser.setVisible(false);
-        } else {
-            btnChangeUser.setOnAction(e -> changeUser());
-        }
+        // When the music repo changed...
+        musicRepo.addListener((observable, oldValue, newValue) -> this.playerUserList.addAll(newValue.getUsers()));
 
+        // When the list of PlayerUser changed...
+        playerUserList.addListener((ListChangeListener<PlayerUser>) c -> {
+            List<? extends PlayerUser> list = c.getList();
+
+            if (list.size() <= 0) {
+                btnChangeUser.setVisible(false);
+            } else {
+                btnChangeUser.setOnAction(e -> changeUser());
+                changeUser();
+            }
+
+        });
+
+        // When session current user changed...
+        playerUser.addListener((observable, oldValue, newValue) -> {
+
+            // Set up labels
+            labelCurrentUser.setText(i18n("edit.currentUser.template",newValue.getAccount()));
+
+            // Fill the listView with new user's list
+            playLists.clear();
+            playLists.addAll(musicRepo.getValue().getLists(newValue));
+
+        });
+
+        // When the content of PlayList changed...
+        playLists.addListener((ListChangeListener<PlayList>) c -> {
+            // Clear PlayList view
+            if (playlistView.getCenter() != null) {
+                playlistView.setCenter(null);
+            }
+        });
+
+        // Set up button actions
+        btnSessionInfo.setOnAction(e -> new SessionInfoDialog(i18n("dialog.sessionInfo.content.template", musicRepo.getValue().getProviderName()))
+                .showAndWait());
+
+        // Set up PlayList list.
         listPlayList.setCellFactory(param -> TextPropertyListCell.of(PlayList::getTitle));
         listPlayList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
+            if (newValue != null) {
                 showPlayList(newValue);
             }
         });
-        listPlayList.setItems(playListContainer);
-
-        playListContainer.addAll(musicRepo.getLists(playerUser));
-
+        listPlayList.setItems(playLists);
     }
 
+    // Change current user
     private void changeUser() {
-        if(playlistView.getCenter() != null){
-            playlistView.setCenter(null);
-        }
 
-        PlayerUser selectedUser = new SelectUserDialog().show(App.stage(), playerUsers);
+        PlayerUser selectedUser = new SelectUserDialog().show(App.stage(), playerUserList);
 
-        if(selectedUser != null){
-            playListContainer.clear();
-            playListContainer.addAll(musicRepo.getLists(selectedUser));
-
-            labelCurrentUser.setText(selectedUser.getAccount());
-            playerUser = selectedUser;
+        if (selectedUser != null) {
+            playerUser.setValue(selectedUser);
         }
     }
 
+    // Put playlist on right
     private void showPlayList(PlayList playList) {
-        if(playlistView.getCenter() != null){
+        if (playlistView.getCenter() != null) {
             playlistView.setCenter(null);
         }
-        List<TrackInfo> trackInfoList = musicRepo.getTracks(playList);
-        playlistView.setCenter(new PlayListView(playList,trackInfoList));
+        List<TrackInfo> trackInfoList = musicRepo.getValue().getTracks(playList);
+        playlistView.setCenter(new PlayListView(playList, trackInfoList));
     }
 
     public void close() {

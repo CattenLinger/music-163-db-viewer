@@ -16,4 +16,12 @@ public class I18n {
             return String.format("%%%s%%", key);
         }
     }
+
+    public static String i18n(String templateKey, Object... templateItems){
+        try {
+            return String.format(UI_MAIN_BUNDLE.getString(templateKey),templateItems);
+        } catch (Exception e){
+            return String.format("%%%s%%_%d(obj)",templateKey,templateItems.length);
+        }
+    }
 }

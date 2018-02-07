@@ -48,4 +48,14 @@ public interface MusicRepo {
      * @return a list of TrackInfo
      */
     List<TrackInfo> getTracks(PlayList playList);
+
+    /**
+     *
+     * Return the MusicRepo implement description
+     *
+     * @return
+     */
+    default String getProviderName(){
+        return this.getClass().getName();
+    }
 }

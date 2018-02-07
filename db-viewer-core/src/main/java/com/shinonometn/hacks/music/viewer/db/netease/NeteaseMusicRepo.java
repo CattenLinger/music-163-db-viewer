@@ -94,6 +94,11 @@ public class NeteaseMusicRepo implements MusicRepo {
                 nePlayList.getId());
     }
 
+    @Override
+    public String getProviderName() {
+        return "Netease Music Database Reader (By shinonometn)";
+    }
+
     /*
     *
     * private procedure
