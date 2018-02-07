@@ -1,4 +1,4 @@
-package com.shinonometn.hacks.music.viewer.ui.controller;
+package com.shinonometn.hacks.music.viewer.ui.controller.database;
 
 import com.shinonometn.hacks.music.viewer.util.FxKit;
 import com.shinonometn.hacks.music.viewer.utils.FunctionUtils;
@@ -8,21 +8,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-public class OpenSessionView extends VBox {
-
-    /**
-     * Singleton instance
-     */
-    private static OpenSessionView instance = FunctionUtils.invoke(OpenSessionView::new);
-
-    public static OpenSessionView getInstance() {
-        return instance;
-    }
+public class ExplorerWelcomeView extends VBox {
 
     @FXML
     private Button theCenterButton;
 
-    public OpenSessionView() {
+    public ExplorerWelcomeView() {
         FxKit.load(this, "/ui/view/openSession.fxml");
     }
 

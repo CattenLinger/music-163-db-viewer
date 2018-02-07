@@ -1,12 +1,9 @@
 package com.shinonometn.hacks.music.viewer.ui;
 
 import com.shinonometn.hacks.music.viewer.ui.controller.HomeView;
-import com.shinonometn.hacks.music.viewer.util.FxKit;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 
 import static com.shinonometn.hacks.music.viewer.util.I18n.i18n;
@@ -34,7 +31,7 @@ public class App {
         stage.setWidth(1280);
         stage.setHeight(720);
 
-        Scene scene = new Scene(new HomeView());
+        Scene scene = new Scene(HomeView.instance());
         instance = new App(stage, scene);
         stage.setScene(scene);
 

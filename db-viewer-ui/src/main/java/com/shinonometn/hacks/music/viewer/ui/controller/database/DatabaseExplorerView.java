@@ -1,4 +1,4 @@
-package com.shinonometn.hacks.music.viewer.ui.controller;
+package com.shinonometn.hacks.music.viewer.ui.controller.database;
 
 import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.info.PlayList;
@@ -25,10 +25,10 @@ import java.util.List;
 
 import static com.shinonometn.hacks.music.viewer.util.I18n.i18n;
 
-public class EditSessionView extends SplitPane {
+public class DatabaseExplorerView extends SplitPane {
 
     // Current music repo
-    private Property<MusicRepo> musicRepo = new SimpleObjectProperty<>();
+    private Property<MusicRepo> musicRepoProperty = new SimpleObjectProperty<>();
 
     // All PlayerUsers in the database
     private ObservableList<PlayerUser> playerUserList = FXCollections.observableArrayList();
@@ -53,18 +53,18 @@ public class EditSessionView extends SplitPane {
     @FXML
     private BorderPane playlistView;
 
-    public EditSessionView(MusicRepo musicRepo) {
-        FxKit.load(this, "/ui/view/editSession.fxml");
+    public DatabaseExplorerView(MusicRepo musicRepo) {
+        FxKit.load(this, "/ui/view/databaseExplorer.fxml");
 
         // Set current MusicRepo, the UI will load all things automatically
-        this.musicRepo.setValue(musicRepo);
+        this.musicRepoProperty.setValue(musicRepo);
     }
 
     @FXML
     private void initialize() {
 
         // When the music repo changed...
-        musicRepo.addListener((observable, oldValue, newValue) -> this.playerUserList.addAll(newValue.getUsers()));
+        musicRepoProperty.addListener((observable, oldValue, newValue) -> this.playerUserList.addAll(newValue.getUsers()));
 
         // When the list of PlayerUser changed...
         playerUserList.addListener((ListChangeListener<PlayerUser>) c -> {
@@ -87,7 +87,7 @@ public class EditSessionView extends SplitPane {
 
             // Fill the listView with new user's list
             playLists.clear();
-            playLists.addAll(musicRepo.getValue().getLists(newValue));
+            playLists.addAll(musicRepoProperty.getValue().getLists(newValue));
 
         });
 
@@ -100,7 +100,7 @@ public class EditSessionView extends SplitPane {
         });
 
         // Set up button actions
-        btnSessionInfo.setOnAction(e -> new SessionInfoDialog(i18n("dialog.sessionInfo.content.template", musicRepo.getValue().getProviderName()))
+        btnSessionInfo.setOnAction(e -> new SessionInfoDialog(i18n("dialog.sessionInfo.content.template", musicRepoProperty.getValue().getProviderName()))
                 .showAndWait());
 
         // Set up PlayList list.
@@ -128,13 +128,17 @@ public class EditSessionView extends SplitPane {
         Node node = playlistView.getCenter();
         PlayListView playListView;
         if (node == null || !(node instanceof PlayListView)) {
-            playListView = new PlayListView(p -> musicRepo.getValue().getTracks(p));
+            playListView = new PlayListView(p -> musicRepoProperty.getValue().getTracks(p));
             playlistView.setCenter(playListView);
         } else {
             playListView = (PlayListView) playlistView.getCenter();
         }
 
         playListView.setPlayList(playList);
+    }
+
+    public void changeMusicRepo(MusicRepo musicRepo){
+        this.musicRepoProperty.setValue(musicRepo);
     }
 
     public void close() {

@@ -1,4 +1,4 @@
-package com.shinonometn.hacks.music.viewer.ui.controller;
+package com.shinonometn.hacks.music.viewer.ui.controller.database;
 
 import com.shinonometn.hacks.music.viewer.info.PlayList;
 import com.shinonometn.hacks.music.viewer.info.TrackInfo;
