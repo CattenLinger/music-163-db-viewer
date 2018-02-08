@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
-@SectionTab("%tab.database.title")
+@SectionTab("tab.database.title")
 public class DatabaseView extends BorderPane{
 
     public DatabaseView() {

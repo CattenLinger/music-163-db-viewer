@@ -15,9 +15,9 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 
@@ -42,13 +42,13 @@ public class DatabaseExplorerView extends SplitPane {
     private ListView<PlayList> listPlayList;
 
     @FXML
-    private Label labelCurrentUser;
+    private MenuButton btnCurrentUser;
 
     @FXML
-    private Button btnChangeUser;
+    private MenuItem menuChangeUser;
 
     @FXML
-    private Button btnSessionInfo;
+    private MenuItem menuSessionInfo;
 
     @FXML
     private BorderPane playlistView;
@@ -71,9 +71,9 @@ public class DatabaseExplorerView extends SplitPane {
             List<? extends PlayerUser> list = c.getList();
 
             if (list.size() <= 0) {
-                btnChangeUser.setVisible(false);
+                menuChangeUser.setVisible(false);
             } else {
-                btnChangeUser.setOnAction(e -> changeUser());
+                menuChangeUser.setOnAction(e -> changeUser());
                 changeUser();
             }
 
@@ -83,7 +83,7 @@ public class DatabaseExplorerView extends SplitPane {
         playerUser.addListener((observable, oldValue, newValue) -> {
 
             // Set up labels
-            labelCurrentUser.setText(i18n("edit.currentUser.template", newValue.getAccount()));
+            btnCurrentUser.setText(i18n("edit.currentUser.template", newValue.getAccount()));
 
             // Fill the listView with new user's list
             playLists.clear();
@@ -100,7 +100,7 @@ public class DatabaseExplorerView extends SplitPane {
         });
 
         // Set up button actions
-        btnSessionInfo.setOnAction(e -> new SessionInfoDialog(i18n("dialog.sessionInfo.content.template", musicRepoProperty.getValue().getProviderName()))
+        menuSessionInfo.setOnAction(e -> new SessionInfoDialog(i18n("dialog.sessionInfo.content.template", musicRepoProperty.getValue().getProviderName()))
                 .showAndWait());
 
         // Set up PlayList list.
@@ -137,7 +137,7 @@ public class DatabaseExplorerView extends SplitPane {
         playListView.setPlayList(playList);
     }
 
-    public void changeMusicRepo(MusicRepo musicRepo){
+    public void changeMusicRepo(MusicRepo musicRepo) {
         this.musicRepoProperty.setValue(musicRepo);
     }
 

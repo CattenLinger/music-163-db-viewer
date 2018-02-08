@@ -1,10 +1,13 @@
 package com.shinonometn.hacks.music.viewer.commons;
 
+import com.shinonometn.hacks.music.viewer.utils.FunctionUtils;
+import com.shinonometn.hacks.music.viewer.utils.JsonUtils;
 import com.shinonometn.hacks.music.viewer.utils.ReflectionHelper;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.charset.Charset;
 import java.util.Locale;
@@ -96,6 +99,47 @@ public class Environment {
         }
     }
 
+    public final static AppSettings APP_SETTING = loadAppSetting();
+
+    public final static File appDataDir = getAppDataDir("music_db_explorer");
+
+    public final static File settingFile = new File(appDataDir,AppSettings.FILE_NAME);
+
+    public static AppSettings loadAppSetting(){
+
+        makeAppDataDirExist();
+
+        AppSettings appSettings = null;
+        if(settingFile.exists()){
+            appSettings = JsonUtils.read(settingFile);
+        }
+
+        if(appSettings == null){
+            appSettings = new AppSettings();
+            appSettings.setDatabasePath(new File(appDataDir,AppSettings.DB_FILE_NAME).getAbsolutePath());
+            FunctionUtils.call(Environment::saveAppSettings);
+        }
+
+        return appSettings;
+    }
+
+    public static void saveAppSettings() throws IOException {
+        makeAppDataDirExist();
+
+        if(settingFile.exists()){
+            settingFile.delete();
+        }
+
+        JsonUtils.writeToFile(APP_SETTING, settingFile);
+    }
+
+    private static void makeAppDataDirExist(){
+        if(!appDataDir.exists()){
+            if(!appDataDir.mkdirs()){
+                throw new IllegalStateException("Could not Create application data folder " + appDataDir.getAbsolutePath());
+            }
+        }
+    }
 
     public static File getAppDataDir(String folder){
         String homeDir = System.getProperty("user.home",".");

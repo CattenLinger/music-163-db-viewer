@@ -79,13 +79,10 @@ public class SelectUserDialog extends VBox {
         stage.setScene(new Scene(this));
 
         //Set up buttons
-        btnConfirm.setOnAction(e -> stage.close());
+        btnConfirm.setOnAction(e -> onConfirm(stage));
+        btnCancel.setOnAction(e -> onCancel(stage));
 
-        btnCancel.setOnAction(e -> {
-            //Cancel selected
-            listUser.getSelectionModel().select(-1);
-            stage.close();
-        });
+        stage.setOnCloseRequest(e -> onCancel(stage));
 
         listUser.setOnMouseClicked(click -> {
             if(click.getClickCount() == 2){
@@ -96,5 +93,15 @@ public class SelectUserDialog extends VBox {
         stage.showAndWait();
 
         return listUser.getSelectionModel().getSelectedItem();
+    }
+
+    private void onConfirm(Stage stage){
+        stage.close();
+    }
+
+    private void onCancel(Stage stage){
+        //Cancel selected
+        listUser.getSelectionModel().select(-1);
+        stage.close();
     }
 }
