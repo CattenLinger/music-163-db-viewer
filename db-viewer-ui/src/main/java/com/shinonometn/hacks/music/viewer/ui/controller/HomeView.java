@@ -10,6 +10,7 @@ import com.shinonometn.hacks.music.viewer.util.I18n;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -35,6 +36,11 @@ public class HomeView extends BorderPane {
 
     private HomeView() {
         FxKit.load(this, "/ui/view/main.fxml");
+
+        Tab tab = new Tab();
+        tab.setContent(new DatabaseView());
+        tab.setText("Database");
+        tabPaneMain.getTabs().add(tab);
     }
 
     @FXML

@@ -16,4 +16,17 @@
     <entry key="selectUser.window.title">选择一个用户以继续</entry>
     <entry key="msg.database_no_user">数据库貌似没有任何用户信息。</entry>
     <entry key="msg.create_session_view_failed">无法打开这个数据库！</entry>
+    <entry key="edit.currentUser.template">当前用户: %s</entry>
+    <entry key="edit.currentUser.change">更改</entry>
+    <entry key="playlist.title">标题：</entry>
+    <entry key="playlist.description">描述：</entry>
+    <entry key="playlist.track.title">歌曲名</entry>
+    <entry key="playlist.track.artist">歌手</entry>
+    <entry key="playlist.track.album">专辑</entry>
+    <entry key="openSession.subTitle">以查看其中的音乐和播放列表</entry>
+    <entry key="openSession.mainTitle">打开一个音乐数据库</entry>
+    <entry key="edit.sessionInfo">详情</entry>
+    <entry key="dialog.sessionInfo.content.template">驱动: %s</entry>
+    <entry key="dialog.sessionInfo.title">详情</entry>
+    <entry key="dialog.sessionInfo.header">当前数据库的信息</entry>
 </properties>

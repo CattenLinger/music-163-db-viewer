@@ -1,7 +1,6 @@
 package com.shinonometn.hacks.music.viewer.ui.controller.database;
 
 import com.shinonometn.hacks.music.viewer.util.FxKit;
-import com.shinonometn.hacks.music.viewer.utils.FunctionUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,7 +13,7 @@ public class ExplorerWelcomeView extends VBox {
     private Button theCenterButton;
 
     public ExplorerWelcomeView() {
-        FxKit.load(this, "/ui/view/openSession.fxml");
+        FxKit.load(this, "/ui/view/explorerWelcome.fxml");
     }
 
     public void setButtonAction(EventHandler<ActionEvent> eventHandler) {
