@@ -54,7 +54,7 @@ public class DatabaseExplorerView extends SplitPane {
     private BorderPane playlistView;
 
     public DatabaseExplorerView(MusicRepo musicRepo) {
-        FxKit.load(this, "/ui/view/databaseExplorer.fxml");
+        FxKit.load(this, "/ui/view/database/databaseExplorer.fxml");
 
         // Set current MusicRepo, the UI will load all things automatically
         this.musicRepoProperty.setValue(musicRepo);

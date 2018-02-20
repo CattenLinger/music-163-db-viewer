@@ -30,4 +30,5 @@
     <entry key="dialog.sessionInfo.title">Informations</entry>
     <entry key="dialog.sessionInfo.header">Information about current database</entry>
     <entry key="tab.database.title">Database View</entry>
+    <entry key="mediaScanning.title">Scanning Media Files</entry>
 </properties>

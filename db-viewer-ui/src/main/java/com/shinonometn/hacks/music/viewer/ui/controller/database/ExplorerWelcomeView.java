@@ -13,7 +13,7 @@ public class ExplorerWelcomeView extends VBox {
     private Button theCenterButton;
 
     public ExplorerWelcomeView() {
-        FxKit.load(this, "/ui/view/explorerWelcome.fxml");
+        FxKit.load(this, "/ui/view/database/explorerWelcome.fxml");
     }
 
     public void setButtonAction(EventHandler<ActionEvent> eventHandler) {

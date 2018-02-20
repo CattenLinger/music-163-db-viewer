@@ -16,7 +16,7 @@ public class DatabaseView extends BorderPane{
     }
 
     public DatabaseView(MusicRepo musicRepo){
-        FxKit.load(this,"/ui/view/databaseView.fxml");
+        FxKit.load(this, "/ui/view/database/databaseView.fxml");
 
         if(musicRepo == null){
             ExplorerWelcomeView explorerWelcomeView = new ExplorerWelcomeView();

@@ -9,7 +9,8 @@ import java.io.File;
  * Created by cattenlinger on 2018/2/20.
  */
 public class MusicLibrary {
-    private JdbcTemplate databaseOperator;
+
+    private TrackManager trackManager;
 
     private final String dbPath;
 
@@ -20,12 +21,14 @@ public class MusicLibrary {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl("jdbc:sqlite:" + dbFile.getAbsolutePath());
         dataSource.setDriverClassName("org.sqlite.JDBC");
-        databaseOperator = new JdbcTemplate(dataSource);
+        JdbcTemplate databaseOperator = new JdbcTemplate(dataSource);
         dbPath = dbFile.getAbsolutePath();
 
         // Initialize music library path
         libraryDataPath = dataPath;
         if(!libraryDataPath.isDirectory()) throw new IllegalStateException("Target is not a directory!");
+
+        trackManager = new TrackManager(databaseOperator);
     }
 
     public String getDbPath() {
@@ -34,5 +37,9 @@ public class MusicLibrary {
 
     public File getLibraryDataPath() {
         return libraryDataPath;
+    }
+
+    public TrackManager getTrackManager(){
+        return this.trackManager;
     }
 }
