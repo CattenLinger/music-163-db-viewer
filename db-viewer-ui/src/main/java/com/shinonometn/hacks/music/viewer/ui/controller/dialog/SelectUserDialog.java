@@ -31,7 +31,7 @@ public class SelectUserDialog extends VBox {
     private ObservableList<PlayerUser> container = FXCollections.observableArrayList();
 
     public SelectUserDialog() {
-        FxKit.load(this, "/ui/view/selectUser.fxml");
+        FxKit.load(this, "/ui/view/dialogs/selectUser.fxml");
     }
 
     @FXML
