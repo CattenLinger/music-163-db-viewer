@@ -17,6 +17,6 @@ public class LibraryWelcomeView extends BorderPane{
     private Label labelPlaylistCount;
 
     public LibraryWelcomeView() {
-        FxKit.load(this,"/ui/view/localStorage/libraryWelcome.xml");
+        FxKit.load(this,"/ui/view/localStorage/libraryWelcome.fxml");
     }
 }

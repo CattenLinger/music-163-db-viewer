@@ -5,6 +5,6 @@ import java.io.Serializable;
 public interface PlayerUser extends Serializable{
 
     default String getAccount() {
-        return "info.unknown";
+        return "db.unknown";
     }
 }

@@ -3,9 +3,7 @@
 <properties>
     <entry key="app.title">音乐数据库浏览器</entry>
     <entry key="app.name">音乐数据库浏览器</entry>
-    <entry key="menu.database">数据库</entry>
-    <entry key="menu.database.open">打开</entry>
-    <entry key="menu.database.close">关闭</entry>
+    <entry key="menu.database.open">新建数据库试图</entry>
     <entry key="menu.localStorage">媒体库</entry>
     <entry key="menu.localStorage.settings">设置</entry>
     <entry key="menu.help">帮助</entry>

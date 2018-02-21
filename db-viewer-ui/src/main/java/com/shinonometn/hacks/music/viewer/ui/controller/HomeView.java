@@ -6,6 +6,7 @@ import com.shinonometn.hacks.music.viewer.db.MusicRepo;
 import com.shinonometn.hacks.music.viewer.db.netease.NeteaseMusicRepoFactory;
 import com.shinonometn.hacks.music.viewer.ui.App;
 import com.shinonometn.hacks.music.viewer.ui.controller.database.DatabaseView;
+import com.shinonometn.hacks.music.viewer.ui.controller.storage.LibraryMainView;
 import com.shinonometn.hacks.music.viewer.util.FxKit;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -23,13 +24,15 @@ public class HomeView extends BorderPane {
 
     private final static HomeView instance = new HomeView();
 
+    private LibraryMainView libraryMainView = null;
+
     public static HomeView instance() {
         return instance;
     }
 
     /*
     *
-    *
+    * FXML Bindings
     *
     * */
 
@@ -37,7 +40,16 @@ public class HomeView extends BorderPane {
     private MenuItem menuItemOpenDatabase;
 
     @FXML
+    private CheckMenuItem menuItemLocalStorageView;
+
+    @FXML
     private TabPane tabPaneMain;
+
+    /*
+    *
+    * Constructor
+    *
+    * */
 
     private HomeView() {
         FxKit.load(this, "/ui/view/main.fxml");
@@ -48,68 +60,67 @@ public class HomeView extends BorderPane {
     @FXML
     private void initialize() {
         menuItemOpenDatabase.setOnAction(e -> createDatabaseView());
+        menuItemLocalStorageView.setOnAction(e -> showLocalStorageView());
     }
 
-    private void postInitialize(){
-        addNewTab(new DatabaseView(), e -> { });
+    private void postInitialize() {
+        addNewTab(new DatabaseView(), e -> {
+        });
     }
 
     /**
-     *
      * Add a new tab that cannot be close
      * Tab name will auto-fill with @SectionTab
      *
      * @param tabContent Content of the tab
      */
-    public void addNewTab(Node tabContent){
+    public void addNewTab(Node tabContent) {
         addNewTab(tabContent, (Consumer<Event>) null);
     }
 
     /**
-     *
      * Add a new tab that cannot be close
      * Using given title as the tab title
      *
      * @param tabContent Content of the tab
-     * @param title Title
+     * @param title      Title
      */
-    public void addNewTab(Node tabContent, String title){
-        addNewTab(tabContent,title,null);
+    public void addNewTab(Node tabContent, String title) {
+        addNewTab(tabContent, title, null);
     }
 
     /**
      * Add a new closable tab
      *
      * @param tabContent Content of tab
-     * @param action action after close
+     * @param action     action after close
      */
-    public void addNewTab(Node tabContent, Consumer<Event> action){
+    public void addNewTab(Node tabContent, Consumer<Event> action) {
         String title;
         SectionTab sectionTab = tabContent.getClass().getAnnotation(SectionTab.class);
-        if(sectionTab != null) {
+        if (sectionTab != null) {
             title = i18n(sectionTab.value());
-        }else{
+        } else {
             title = i18n("tab.new");
         }
 
-        addNewTab(tabContent,title,action);
+        addNewTab(tabContent, title, action);
     }
 
     /**
-     *
      * Adda a new Tab
      *
      * @param tabContent Content of tab
-     * @param title Title
-     * @param action action after close, if null, the tab will not be closable
+     * @param title      Title
+     * @param action     action after close, if null, the tab will not be closable
      */
-    public void addNewTab(Node tabContent, String title, Consumer<Event> action){
+    public void addNewTab(Node tabContent, String title, Consumer<Event> action) {
         Tab tab = new Tab();
         tab.setText(title);
-        if(action != null){
+        if (action != null) {
             tab.setOnClosed(action::accept);
             tab.setClosable(true);
-        }else{
+        } else {
             tab.setClosable(false);
         }
         tab.setContent(tabContent);
@@ -134,7 +145,40 @@ public class HomeView extends BorderPane {
 
     public void createDatabaseView() {
         DatabaseView databaseView = new DatabaseView();
-        addNewTab(databaseView, e -> { });
+        addNewTab(databaseView, e -> {
+        });
         createDatabaseView(databaseView);
+    }
+
+    public void showLocalStorageView(){
+
+        Tab libraryMainViewTab = findLibraryMainViewTab();
+        boolean findLibraryMainView = libraryMainViewTab != null;
+
+        if(libraryMainView != null && !findLibraryMainView){
+            addNewTab(libraryMainView, event -> menuItemLocalStorageView.setSelected(false));
+        } else if ( libraryMainView == null ){
+            LibraryMainView view = new LibraryMainView();
+            addNewTab(view, event -> menuItemLocalStorageView.setSelected(false));
+            this.libraryMainView = view;
+        } else {
+            tabPaneMain.getSelectionModel().select(libraryMainViewTab);
+        }
+
+        if(libraryMainViewTab != null) {
+            menuItemLocalStorageView.setSelected(true);
+        }
+    }
+
+    private Tab findLibraryMainViewTab(){
+        Tab result = null;
+        for (Tab tab : tabPaneMain.getTabs()){
+            if(tab.getContent() instanceof LibraryMainView){
+                result = tab;
+                break;
+            }
+        }
+
+        return result;
     }
 }

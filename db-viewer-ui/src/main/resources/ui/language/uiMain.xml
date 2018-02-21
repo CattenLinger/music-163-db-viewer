@@ -3,9 +3,7 @@
 <properties>
     <entry key="app.title">Music DB Explorer</entry>
     <entry key="app.name">Music DB Explorer</entry>
-    <entry key="menu.database">Database</entry>
-    <entry key="menu.database.open">Open</entry>
-    <entry key="menu.database.close">Close</entry>
+    <entry key="menu.database.open">Open Database</entry>
     <entry key="menu.localStorage">Media Storage</entry>
     <entry key="menu.localStorage.settings">Settings</entry>
     <entry key="menu.help">Help</entry>
@@ -31,4 +29,11 @@
     <entry key="dialog.sessionInfo.header">Information about current database</entry>
     <entry key="tab.database.title">Database View</entry>
     <entry key="mediaScanning.title">Scanning Media Files</entry>
+    <entry key="menu.view">Views</entry>
+    <entry key="menu.localStorage.view">View local library</entry>
+    <entry key="libraryWelcome.left.title">Tracks</entry>
+    <entry key="libraryWelcome.right.title">Playlist</entry>
+    <entry key="libraryWelcome.left.button">View All Tracks</entry>
+    <entry key="libraryWelcome.right.button">Manage Playlists</entry>
+    <entry key="localStorage.title">Local Library</entry>
 </properties>
